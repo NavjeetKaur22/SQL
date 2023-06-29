@@ -1,4 +1,4 @@
-# I queried a database with multiple tables in it to quantity statistics about customer and order data.
+# I queried a database with multiple tables in it to quantify statistics about customer and order data.
 
 #1 How many orders were places in January?
 SELECT COUNT (orderid)
