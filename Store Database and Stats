@@ -1,4 +1,5 @@
---create a clothing store database
+#Create a clothing store database
+
 CREATE TABLE clothes (id INTEGER PRIMARY KEY, clothingtype TEXT, size TEXT, color TEXT, price INTEGER);
 
 INSERT INTO clothes VALUES (1, "shirt", "S", "Yellow", 15);
@@ -17,8 +18,8 @@ INSERT INTO clothes VALUES (13, "shirt", "S", "black", 16);
 INSERT INTO clothes VALUES (14, "dress", "S", "Blue", 14);
 INSERT INTO clothes VALUES (15, "shirt", "S", "green", 12);
 
---display the databse order by price
+#Display the databse order by price
 SELECT * FROM clothes ORDER BY price;
 
---sum of the price ordered by clothing type
+#Sum of the price ordered by clothing type
 SELECT clothingtype, SUM(price) FROM clothes GROUP BY clothingtype;
