@@ -1,0 +1,115 @@
+--Project Description:
+  --This project is an E-commerce Analysis project utilizing the "Online Retail II" dataset from Kaggle. The dataset consists of transactional data from an online retail store, and the goal is to analyze customer behavior, identify popular products, calculate sales trends over time, segment customers, and derive insights for marketing campaigns.
+
+--Key Features:
+  --SQL-based analysis: Utilizing SQL queries, the project explores the dataset to extract meaningful insights.
+  --Customer behavior analysis: Analyzing customer purchase patterns, identifying trends, and understanding customer preferences.
+  --Product popularity analysis: Identifying popular products based on sales volume or customer demand.
+  --Sales trends over time: Analyzing sales trends, seasonality, and identifying patterns over specific time periods.
+  --Customer segmentation: Segmenting customers based on their behavior, demographics, or purchasing patterns.
+  --Marketing campaign insights: Deriving insights to support marketing campaigns, such as campaign effectiveness or customer response.
+
+--SQL Analysis:
+
+1. What is the customer retention rate over a specified period, and how does it differ across different customer segments?
+
+SELECT DATE_FORMAT(invoice_date, '%Y-%m') AS year_month, COUNT(DISTINCT customer_id) AS retained_customers
+FROM online_retail
+GROUP BY year_month;
+
+2. Identify any seasonal patterns in customer purchasing behavior, such as peak buying months or days of the week?
+
+SELECT MONTH(invoice_date) AS month, DAYNAME(invoice_date) AS day_of_week, COUNT(*) AS transaction_count
+FROM online_retail
+GROUP BY month, day_of_week
+ORDER BY month, transaction_count DESC;
+
+3. Which products have the highest customer satisfaction ratings, and are there any correlations between customer satisfaction and purchase frequency?
+
+SELECT product_id, AVG(satisfaction_rating) AS avg_satisfaction_rating, COUNT(*) AS purchase_count
+FROM online_retail
+GROUP BY product_id
+ORDER BY avg_satisfaction_rating DESC, purchase_count DESC;
+
+4. How does the average order value vary across different customer segments (e.g., new customers, repeat customers, high-value customers)?
+
+SELECT customer_segment, AVG(order_value) AS avg_order_value
+FROM (
+    SELECT customer_id,
+           CASE
+               WHEN DATEDIFF(MAX(invoice_date), MIN(invoice_date)) <= 30 THEN 'New Customer'
+               WHEN COUNT(DISTINCT invoice_no) = 1 THEN 'Repeat Customer'
+               ELSE 'High-Value Customer'
+           END AS customer_segment,
+           SUM(quantity * unit_price) AS order_value
+    FROM online_retail
+    GROUP BY customer_id
+) AS customer_segments
+GROUP BY customer_segment;
+
+5. Identify any correlation between customer demographics (e.g., age, gender) and their purchase behavior?
+
+SELECT age_group, gender, AVG(order_value) AS avg_order_value
+FROM online_retail
+JOIN customer_demographics ON online_retail.customer_id = customer_demographics.customer_id
+GROUP BY age_group, gender;
+
+6. Identify any patterns or trends in customer purchasing behavior based on their geographical location?
+
+SELECT country, MONTH(invoice_date) AS month, COUNT(*) AS transaction_count
+FROM online_retail
+GROUP BY country, month
+ORDER BY country, month;
+
+
+7. Are there any associations between specific product categories and customer segmentation (e.g., high-value customers, budget shoppers)?
+
+SELECT customer_segment, product_category, COUNT(*) AS transaction_count
+FROM (
+    SELECT customer_id,
+           CASE
+               WHEN DATEDIFF(MAX(invoice_date), MIN(invoice_date)) <= 30 THEN 'New Customer'
+               WHEN COUNT(DISTINCT invoice_no) = 1 THEN 'Repeat Customer'
+               ELSE 'High-Value Customer'
+           END AS customer_segment,
+           product_category
+    FROM online_retail
+    GROUP BY customer_id, product_category
+) AS customer_segments
+GROUP BY customer_segment, product_category
+ORDER BY customer_segment, transaction_count DESC;
+
+8. Identify any significant differences in customer purchasing behavior based on the source or medium of their visits?
+
+SELECT source, medium, AVG(order_value) AS avg_order_value
+FROM online_retail
+GROUP BY source, medium;
+
+9. How does customer purchase frequency change after specific marketing campaigns, and are there any differences based on customer segments?
+
+SELECT campaign_name, customer_segment, AVG(purchase_frequency) AS avg_purchase_frequency
+FROM (
+    SELECT customer_id,
+           CASE
+               WHEN DATEDIFF(MAX(invoice_date), MIN(invoice_date)) <= 30 THEN 'New Customer'
+               WHEN COUNT(DISTINCT invoice_no) = 1 THEN 'Repeat Customer'
+               ELSE 'High-Value Customer'
+           END AS customer_segment,
+           campaign_name,
+           COUNT(DISTINCT invoice_no) / DATEDIFF(MAX(invoice_date), MIN(invoice_date)) AS purchase_frequency
+    FROM online_retail
+    GROUP BY customer_id, campaign_name
+) AS customer_segments
+GROUP BY campaign_name, customer_segment;
+
+
+
+
+
+
+
+
+
+
+
+
