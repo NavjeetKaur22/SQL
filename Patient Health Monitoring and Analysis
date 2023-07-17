@@ -11,7 +11,7 @@
   --Enhanced Healthcare Decision-making: Utilize the insights gained from the analysis to optimize healthcare services, improve patient 
     outcomes, and support evidence-based decision-making.
 
---SQL Questions:
+--SQL Code:
 
 1. Identify any significant differences in disease progression based on demographic factors such as age, gender, or ethnicity, while considering the patients' insurance coverage?
 
