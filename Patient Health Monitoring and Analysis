@@ -13,7 +13,7 @@
 
 --SQL Questions:
 
-1. Can you identify any significant differences in disease progression based on demographic factors such as age, gender, or ethnicity, while considering the patients' insurance coverage?
+1. Identify any significant differences in disease progression based on demographic factors such as age, gender, or ethnicity, while considering the patients' insurance coverage?
 
 SELECT demographic_factor, insurance_coverage, AVG(disease_progression) AS avg_disease_progression
 FROM patient_health_records
@@ -26,7 +26,7 @@ FROM patient_health_records
 JOIN patient_addresses ON patient_health_records.patient_id = patient_addresses.patient_id
 GROUP BY socioeconomic_status;
 
-3. Can you identify any patterns or predictors for hospital readmissions among patients with specific chronic diseases, considering the length of hospital stay for each admission?
+3. Identify any patterns or predictors for hospital readmissions among patients with specific chronic diseases, considering the length of hospital stay for each admission?
 
 SELECT chronic_disease, AVG(DATEDIFF(discharge_date, admission_date)) AS avg_length_of_stay, predictor_variable, COUNT(*) AS readmission_count
 FROM patient_health_records
@@ -41,7 +41,7 @@ FROM patient_health_records
 JOIN primary_care_providers ON patient_health_records.patient_id = primary_care_providers.patient_id
 GROUP BY region, healthcare_facility;
 
-5. Can you identify any correlations between medication adherence and disease management outcomes, considering the patients' appointment attendance?
+5. Identify any correlations between medication adherence and disease management outcomes, considering the patients' appointment attendance?
 
 SELECT medication_adherence, AVG(disease_management_outcomes) AS avg_disease_management_outcomes
 FROM patient_health_records
@@ -64,7 +64,7 @@ JOIN patient_addresses ON patient_health_records.patient_id = patient_addresses.
 GROUP BY racial_ethnic_group, chronic_disease
 ORDER BY disease_count DESC;
 
-8. Can you identify any trends or patterns in the occurrence of adverse drug reactions among patients, considering the patients' medication history?
+8. Identify any trends or patterns in the occurrence of adverse drug reactions among patients, considering the patients' medication history?
 
 SELECT drug_name, occurrence_year, COUNT(*) AS adverse_reaction_count
 FROM patient_health_records
