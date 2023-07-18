@@ -73,7 +73,7 @@ FROM (
                ELSE 'High-Value Customer'
            END AS customer_segment,
            product_category
-    FROM online_retail
+    FROM online_retail 
     GROUP BY customer_id, product_category
 ) AS customer_segments
 GROUP BY customer_segment, product_category
