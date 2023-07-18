@@ -1,6 +1,6 @@
 --Project Description:
   --This project is an E-commerce Analysis project utilizing the "Online Retail II" dataset from Kaggle. The dataset consists of transactional data from an online retail store, and the goal is to analyze customer behavior, identify popular products, calculate sales trends over time, segment customers, and derive insights for marketing campaigns.
-
+ 
 --Key Features:
   --SQL-based analysis: Utilizing SQL queries, the project explores the dataset to extract meaningful insights.
   --Customer behavior analysis: Analyzing customer purchase patterns, identifying trends, and understanding customer preferences.
