@@ -1,0 +1,94 @@
+--Description:
+The Cyber Security Incident Analysis and Response project is an advanced system designed to proactively detect and respond to cyber threats within an organization's network. Leveraging the "UNSW-NB15" dataset and SQL, this project provides an in-depth analysis of network log data to identify potential security breaches and quickly respond to incidents, ensuring data integrity and network resilience.
+
+--Key Highlights:
+1. Data-driven Cyber Security: The project utilizes SQL queries to manipulate and analyze network log data, offering valuable insights into attack patterns, intrusion attempts, and probing activities. With real-time monitoring and automated alerting, it enables swift response to potential threats.
+
+2. Advanced SQL Techniques: Employing complex SQL queries, the system performs conditional aggregations, subqueries, and filtering to extract meaningful information. From calculating average payload sizes to analyzing SYN/ACK flags, the project delves deep into cyber security analytics.
+
+3. Improved Incident Response: The project's actionable insights empower cyber security professionals to optimize incident response strategies, detect anomalies, and swiftly mitigate attacks. Its interactive visualizations facilitate data-driven decision-making for enhanced network protection.
+
+--SQL Code:
+
+1. What are the top 5 source IP addresses involved in denial-of-service (DoS) attacks, and for each source IP, what is the average duration of their attack flows?
+
+SELECT srcip, AVG(duration) AS avg_attack_duration
+FROM unsw_nb15
+WHERE attack_cat = 'DoS' AND duration > 0
+GROUP BY srcip
+ORDER BY avg_attack_duration DESC
+LIMIT 5;
+
+2. For each type of intrusion attempt, what is the average number of packets per flow and the average payload size in bytes?
+
+SELECT attack_cat,
+       AVG(pkts) AS avg_packets_per_flow,
+       AVG(totallen) AS avg_payload_size_bytes
+FROM unsw_nb15
+WHERE attack_cat LIKE 'Intrusion%'
+GROUP BY attack_cat;
+
+3. Among the top 10 most frequent source IP addresses involved in DoS attacks, what percentage of their flows have a "FIN" flag set in their TCP flags?
+
+SELECT srcip,
+       (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM unsw_nb15 WHERE attack_cat = 'DoS' AND srcip IN (SELECT srcip FROM unsw_nb15 WHERE attack_cat = 'DoS' GROUP BY srcip ORDER BY COUNT(*) DESC LIMIT 10))) AS fin_flag_percentage
+FROM unsw_nb15
+WHERE attack_cat = 'DoS' AND tcp_flags LIKE '%F%'
+GROUP BY srcip;
+
+4. Calculate the average number of packets per flow for attack categories that have an average payload size greater than 500 bytes.
+
+SELECT attack_cat, AVG(pkts) AS avg_packets_per_flow
+FROM unsw_nb15
+WHERE attack_cat IN (SELECT attack_cat FROM unsw_nb15 GROUP BY attack_cat HAVING AVG(totallen) > 500)
+GROUP BY attack_cat;
+
+5. For each type of attack, calculate the median time-to-live (TTL) value of flows that have a payload size larger than the average payload size for that attack type.
+
+SELECT attack_cat, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ttl) AS median_ttl
+FROM unsw_nb15
+WHERE attack_cat IS NOT NULL AND totallen > (SELECT AVG(totallen) FROM unsw_nb15 WHERE attack_cat = a.attack_cat GROUP BY attack_cat) 
+GROUP BY attack_cat;
+
+6. Identify the top 3 destination IP addresses that have the highest average payload size and the highest number of packets per flow among all attack categories.
+
+SELECT dstip, AVG(totallen) AS avg_payload_size, AVG(pkts) AS avg_packets_per_flow
+FROM unsw_nb15
+WHERE attack_cat IS NOT NULL
+GROUP BY dstip
+ORDER BY avg_payload_size DESC, avg_packets_per_flow DESC
+LIMIT 3;
+
+7. Calculate the percentage of flows with "SYN" flag set in their TCP flags for each attack category, considering only flows with a duration longer than 5 seconds.
+
+SELECT attack_cat, (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM unsw_nb15 WHERE attack_cat IS NOT NULL AND duration > 5)) AS syn_flag_percentage
+FROM unsw_nb15
+WHERE attack_cat IS NOT NULL AND duration > 5 AND tcp_flags LIKE '%S%'
+GROUP BY attack_cat;
+
+8. For each type of intrusion attempt, calculate the percentage of flows that have both the "SYN" and "ACK" flags set in their TCP flags.
+
+SELECT attack_cat, (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM unsw_nb15 WHERE attack_cat LIKE 'Intrusion%')) AS syn_ack_percentage
+FROM unsw_nb15
+WHERE attack_cat LIKE 'Intrusion%' AND tcp_flags LIKE '%SA%'
+GROUP BY attack_cat;
+
+9. Find the average number of packets per flow for flows with "FIN" flag set in their TCP flags, grouped by each attack category, and sort the results in descending order.
+
+SELECT attack_cat, AVG(pkts) AS avg_packets_per_flow
+FROM unsw_nb15
+WHERE tcp_flags LIKE '%F%'
+GROUP BY attack_cat
+ORDER BY avg_packets_per_flow DESC;
+
+10. Calculate the average payload size for each source and destination IP pair that has more than 10 flows in the dataset.
+
+SELECT srcip, dstip, AVG(totallen) AS avg_payload_size
+FROM unsw_nb15
+WHERE (srcip, dstip) IN (SELECT srcip, dstip FROM unsw_nb15 GROUP BY srcip, dstip HAVING COUNT(*) > 10)
+GROUP BY srcip, dstip;
+
+
+
+
+
