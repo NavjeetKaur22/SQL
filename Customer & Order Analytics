@@ -1,6 +1,6 @@
 --I queried a database with multiple tables in it to quantify statistics about customer and order data.
 
-1. How many orders were places in January?
+1. How many orders were placed in January?
 SELECT COUNT (orderid)
 FROM BIT_DB.JanSales
 WHERE length (orderid) = 6
