@@ -2,14 +2,12 @@
 
 --Key Features:
   --SQL-based Analysis: Utilize SQL queries to extract, transform, and analyze patient health data.
-  --Comprehensive Health Monitoring: Analyze patient health records, chronic disease management, medication adherence, demographics, and         healthcare outcomes.
+  --Comprehensive Health Monitoring: Analyze patient health records, chronic disease management, medication adherence, demographics, and healthcare outcomes.
   --Data-driven Insights: Derive meaningful insights and patterns to improve healthcare decision-making.
-  --Patient Segmentation: Segment patients based on various factors like demographics, disease type, medication adherence, and healthcare       utilization.
+  --Patient Segmentation: Segment patients based on various factors like demographics, disease type, medication adherence, and healthcare utilization.
   --Trend Analysis: Identify trends, patterns, and correlations in patient health data over time.
-  --Project Flexibility: Choose a specific area of focus, such as chronic disease management or medication adherence, based on the  
-    available healthcare dataset.
-  --Enhanced Healthcare Decision-making: Utilize the insights gained from the analysis to optimize healthcare services, improve patient 
-    outcomes, and support evidence-based decision-making.
+  --Project Flexibility: Choose a specific area of focus, such as chronic disease management or medication adherence, based on the available healthcare dataset.
+  --Enhanced Healthcare Decision-making: Utilize the insights gained from the analysis to optimize healthcare services, improve patient outcomes, and support evidence-based decision-making.
 
 --SQL Code:
 
